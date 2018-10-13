@@ -15,8 +15,11 @@ import Collapse from '@material-ui/core/Collapse'
 import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 
-import TodoList from '@page/Tech/Demo/TodoList'
+import TodoList from '@page/Tech/Demo/TodoList/Main'
+import ReduxTodoList from '@page/Tech/Demo/ReduxTodoList/Main'
+import Ellipse from '@page/Tech/Demo/Ellipse/Ellipse'
 
+export default
 @withRouter
 @withStyles({
   grid: {
@@ -39,7 +42,7 @@ import TodoList from '@page/Tech/Demo/TodoList'
     padding: 20
   }
 })
-export default class Tech extends PureComponent {
+class Tech extends PureComponent {
   constructor () {
     super()
     this.state = {
@@ -81,6 +84,12 @@ export default class Tech extends PureComponent {
                     <ListItem button className={classes.nested} onClick={ () => this.props.history.push('/tech/demo/todolist') } >
                       <ListItemText inset>Todo List</ListItemText>
                     </ListItem>
+                    <ListItem button className={classes.nested} onClick={ () => this.props.history.push('/tech/demo/redux-todolist') } >
+                      <ListItemText inset>Redux Todo List</ListItemText>
+                    </ListItem>
+                    <ListItem button className={classes.nested} onClick={ () => this.props.history.push('/tech/demo/ellpise') } >
+                      <ListItemText inset>Ellpise</ListItemText>
+                    </ListItem>
                   </List>
                 </Collapse>
                 <ListItem button onClick={ () => this.onClickSideBar('designOpen', 'design') }>
@@ -101,6 +110,8 @@ export default class Tech extends PureComponent {
           <Grid item className={classes.rightItem}>
             <Paper className={classes.rightPaper}>
               <Route exact path="/tech/demo/todolist" component={TodoList} />
+              <Route exact path="/tech/demo/redux-todolist" component={ReduxTodoList} />
+              <Route exact path="/tech/demo/ellpise" component={Ellipse} />
             </Paper>
           </Grid>
         </Grid>

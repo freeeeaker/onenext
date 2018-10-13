@@ -24,6 +24,7 @@ import EditIcon from '@material-ui/icons/Edit'
 import FilterListIcon from '@material-ui/icons/FilterList'
 import { lighten } from '@material-ui/core/styles/colorManipulator'
 
+export default 
 @withStyles({
   table: {
     '& $td, & $th': {
@@ -41,7 +42,7 @@ import { lighten } from '@material-ui/core/styles/colorManipulator'
     marginTop: 10
   }
 })
-export default class Todo extends PureComponent {
+class Todo extends PureComponent {
   constructor () {
     super()
     this.state = {

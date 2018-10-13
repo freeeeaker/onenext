@@ -1,6 +1,8 @@
+/* eslint-disable */
 import React, { PureComponent } from 'react'
 import classnames from 'classnames'
 import { withRouter } from 'react-router'
+
 import AppBar from '@material-ui/core/AppBar'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
@@ -11,6 +13,7 @@ import HomeIcon from '@material-ui/icons/Home'
 import FaceIcon from '@material-ui/icons/Face'
 import FreeBreakfastIcon from '@material-ui/icons/FreeBreakfast'
 
+export default 
 @withRouter
 @withStyles({
   root: {
@@ -37,7 +40,7 @@ import FreeBreakfastIcon from '@material-ui/icons/FreeBreakfast'
     cursor: 'pointer'
   }
 })
-export default class Header extends PureComponent {
+class Header extends PureComponent {
   navigateTo = link => {
     this.props.history.push(link)
   }
