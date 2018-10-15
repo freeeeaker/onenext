@@ -18,11 +18,15 @@ class Ellipse extends PureComponent {
     this.canvas.height = 490
     this.n = 0
     this.direction = 1
+    this.RAFTimer = null
     const animation = () => {
       this.draw(context, this.canvas.width, this.canvas.height)
-      requestAnimationFrame(animation)
+      this.RAFTimer = requestAnimationFrame(animation)
     }
     animation()
+  }
+  componentWillUnmount () {
+    cancelAnimationFrame(this.RAFTimer)
   }
   draw (context, width, height) {
     const centerX = width / 2
@@ -134,6 +138,11 @@ class Ellipse extends PureComponent {
     context.fillText(`x:${x}, y:${y}`, x, y)
   }
   getDot (line, ellipse) {
+    // 直线公式 y = gx + h
+    // 椭圆公式   (x - m)^2    (y - n)^2
+    //          ———————— +   ————————————  = 1
+    //           a^2            b^2
+    // m，n 是椭圆圆心， a 长轴， b 短轴
     const { g, h } = line
     const { a, b, m, n } = ellipse
     const B = 2 * g * (h - n) * a * a - 2 * m * b * b

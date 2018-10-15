@@ -25,6 +25,7 @@ import EditIcon from '@material-ui/icons/Edit'
 import FilterListIcon from '@material-ui/icons/FilterList'
 import { lighten } from '@material-ui/core/styles/colorManipulator'
 
+import TodoInput from './components/TodoInput'
 import Footer from './components/Footer'
 import Todo from './components/Todo'
 import TodoList from './components/TodoList'
@@ -32,30 +33,10 @@ import TodoList from './components/TodoList'
 import reducers from './reducer/index'
 const store = createStore(reducers)
 
-@withStyles({
-  table: {
-    '& $td, & $th': {
-      width: 40,
-      textAlign: 'center'
-    },
-    '& $th:nth-child(3), & $td:nth-child(3)': {
-      width: 'auto'
-    },
-    '& $td:nth-child(3)': {
-      textAlign: 'left'
-    }
-  }
+@connect(function ({ todos, visibility }) {
+  return { todos, visibility }
 })
 class App extends PureComponent {
-  constructor () {
-    super()
-    this.state = {
-      value: '',
-      todoList: [],
-      allSelected: false,
-      status: 'all'
-    }
-  }
   onChange = (ev) => {
     this.setState({ value: ev.target.value })
   }
@@ -89,40 +70,27 @@ class App extends PureComponent {
     })
   }
   render() {
-    const { value, todoList, allSelected, status } = this.state
-    const { classes } = this.props
-    const finalTodoList = todoList.filter(item => {
-      if (status === 'done') return item.checked
-      if (status === 'todo') return !item.checked
+    const { todos, visibility } = this.props
+    // const { classes } = this.props
+    const finalTodoList = todos.filter(item => {
+      if (visibility === 'COMPLETE') return item.select
+      if (visibility === 'ACTIVE') return !item.select
       return true
     })
+    console.log(finalTodoList)
     return (
       <div>
-        <h4>React todoList</h4>
+        <h4>React Redux todoList</h4>
         <div>
-          <Input
-            fullWidth
-            autoComplete="off"
-            placeholder="input your todo item"
-            value={value}
-            onChange={this.onChange}
-            onKeyUp={this.onKeyUp}
-          />
+          <TodoInput />
         </div>
         {
-          finalTodoList.length > 0 ?
-          <TodoList>
-          {
-            finalTodoList.map((todo, index) => {
-              return <Todo data={todo} index={index} />
-            })
-          }
-          </TodoList>
+          finalTodoList.length > 0
+          ? <TodoList>{ finalTodoList.map((todo, index) => <Todo {...todo} key={todo.id} index={index} />) }</TodoList>
           : <p>There currently are no todos </p>
         }
         {
-          todoList.length > 0 &&
-          <Footer />
+          todos.length > 0 && <Footer />
         }
       </div>
     )

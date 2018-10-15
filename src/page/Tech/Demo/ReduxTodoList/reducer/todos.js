@@ -1,4 +1,11 @@
-import { ADD_TODO, REMOVE_TODO, UPDATE_TODO } from '../config/const'
+import {
+  ADD_TODO,
+  REMOVE_TODO,
+  UPDATE_TODO,
+  SELECTE_ALL_TODOS,
+  CLEAR_ALL_TODOS,
+  CLEAR_SELECTED_TODOS
+} from '../config/const'
 
 export default function todo (state = [], action) {
   switch (action.type) {
@@ -9,7 +16,8 @@ export default function todo (state = [], action) {
           value: action.value,
           id: Date.now(),
           complete: false,
-          edit: false
+          edit: false,
+          select: false
         }
       ]
     case REMOVE_TODO: {
@@ -28,6 +36,12 @@ export default function todo (state = [], action) {
         ...state.slice(index + 1)
       ]
     }
+    case SELECTE_ALL_TODOS:
+      return state.map(item => Object.assign({}, item, { select: action.selectAll === 'ALL' }))
+    case CLEAR_SELECTED_TODOS:
+      return state.filter(item => !item.select)
+    case CLEAR_ALL_TODOS:
+      return []
     default:
       return state
   }

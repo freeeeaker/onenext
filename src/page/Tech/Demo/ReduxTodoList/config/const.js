@@ -2,5 +2,8 @@ export const ADD_TODO = 'ADD_TODO'
 export const REMOVE_TODO = 'REMOVE_TODO'
 export const UPDATE_TODO = 'UPDATE_TODO'
 export const EDIT_TODO = 'EDIT_TODO'
+export const SELECTE_ALL_TODOS = 'SELECTE_ALL_TODOS'
+export const CLEAR_SELECTED_TODOS = 'CLEAR_SELECTED_TODOS'
+export const CLEAR_ALL_TODOS = 'CLEAR_ALL_TODOS'
 
 export const SET_VISIBILITY = 'SET_VISIBILITY'

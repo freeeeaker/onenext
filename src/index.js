@@ -13,5 +13,3 @@ ReactDOM.render(
   document.getElementById('root')
 );
 registerServiceWorker();
-console.log(react_router)
-console.log(react_router_dom)
