@@ -40,7 +40,6 @@ export default
 class TodoList extends PureComponent {
   constructor (props) {
     super()
-    console.log(props)
     this.state = { selectAll: this.getAllSelectedStatus(props.todos) }
   }
   componentWillReceiveProps (nextProps) {

@@ -29,9 +29,17 @@ class Todo extends PureComponent {
     super()
     this.state = { value: props.value, checked: props.select }
   }
-  componentWillReceiveProps (nextProps) {
-    this.setState({ checked: nextProps.select })
+  static getDerivedStateFromProps (props, state) {
+    console.log(props)
+    console.log(state)
+    if (props.select != state.checked) {
+      return { checked: props.select }
+    }
+    return null
   }
+  // componentWillReceiveProps (nextProps) {
+  //   this.setState({ checked: nextProps.select })
+  // }
   editTodo = id => {
     this.props.updateTodo({ id, edit: true })
   }

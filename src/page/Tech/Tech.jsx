@@ -15,9 +15,10 @@ import Collapse from '@material-ui/core/Collapse'
 import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 
-import TodoList from '@page/Tech/Demo/TodoList/Main'
-import ReduxTodoList from '@page/Tech/Demo/ReduxTodoList/Main'
-import Ellipse from '@page/Tech/Demo/Ellipse/Ellipse'
+import * as notes from './Note/'
+import * as demos from './Demo/'
+
+console.log(notes)
 
 export default
 @withRouter
@@ -30,7 +31,7 @@ export default
     paddingBottom: 20
   },
   leftItem: {
-    marginRight: 20
+    marginRight: 10
   },
   rightItem: {
     flexGrow: 1
@@ -39,7 +40,8 @@ export default
     width: 240,
   },
   rightPaper: {
-    padding: 20
+    padding: 20,
+    marginRight: 10
   }
 })
 class Tech extends PureComponent {
@@ -59,10 +61,10 @@ class Tech extends PureComponent {
   }
   render () {
     const { classes } = this.props
-    const { demoOpen } = this.state
+    const { demoOpen, noteOpen } = this.state
     return (
       <div>
-        <Grid container className={classes.grid}>
+        <Grid container wrap="nowrap" className={classes.grid}>
           <Grid item className={classes.leftItem}>
             <Paper className={classes.paper}>
               <List>
@@ -71,7 +73,19 @@ class Tech extends PureComponent {
                     <NoteIcon />
                     </ListItemIcon>
                   <ListItemText>Note</ListItemText>
+                  {noteOpen ? <ExpandLess /> : <ExpandMore />}
                 </ListItem>
+                <Collapse in={noteOpen} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding>
+                    { Object.keys(notes).map(note => {
+                      return (
+                        <ListItem key={note} button className={classes.nested} onClick={ () => this.props.history.push(`/tech/note/${note}`) } >
+                          <ListItemText inset>{notes[note].displayName}</ListItemText>
+                        </ListItem>
+                      )
+                    }) }
+                  </List>
+                </Collapse>
                 <ListItem button onClick={ () => this.onClickSideBar('demoOpen', 'demo') }>
                   <ListItemIcon>
                     <AlbumIcon />
@@ -81,15 +95,15 @@ class Tech extends PureComponent {
                 </ListItem>
                 <Collapse in={demoOpen} timeout="auto" unmountOnExit>
                   <List component="div" disablePadding>
-                    <ListItem button className={classes.nested} onClick={ () => this.props.history.push('/tech/demo/todolist') } >
-                      <ListItemText inset>Todo List</ListItemText>
-                    </ListItem>
-                    <ListItem button className={classes.nested} onClick={ () => this.props.history.push('/tech/demo/redux-todolist') } >
-                      <ListItemText inset>Redux Todo List</ListItemText>
-                    </ListItem>
-                    <ListItem button className={classes.nested} onClick={ () => this.props.history.push('/tech/demo/ellpise') } >
-                      <ListItemText inset>Ellpise</ListItemText>
-                    </ListItem>
+                  { 
+                    Object.keys(demos).map(demo => {
+                      return (
+                        <ListItem key={demo} button className={classes.nested} onClick={ () => this.props.history.push(`/tech/demo/${demo}`) } >
+                          <ListItemText inset>{demo}</ListItemText>
+                        </ListItem>
+                      )
+                    })
+                  }
                   </List>
                 </Collapse>
                 <ListItem button onClick={ () => this.onClickSideBar('designOpen', 'design') }>
@@ -109,9 +123,20 @@ class Tech extends PureComponent {
           </Grid>
           <Grid item className={classes.rightItem}>
             <Paper className={classes.rightPaper}>
-              <Route exact path="/tech/demo/todolist" component={TodoList} />
-              <Route exact path="/tech/demo/redux-todolist" component={ReduxTodoList} />
-              <Route exact path="/tech/demo/ellpise" component={Ellipse} />
+              { 
+                Object.keys(demos).map(demo => {
+                  return (
+                    <Route key={`/tech/demo/${demo}`} exact path={`/tech/demo/${demo}`} component={demos[demo]} />
+                  )
+                })
+              }
+              { 
+                Object.keys(notes).map(note => {
+                  return (
+                    <Route key={`/tech/note/${note}`} exact path={`/tech/note/${note}`} component={notes[note]} />
+                  )
+                })
+              }
             </Paper>
           </Grid>
         </Grid>

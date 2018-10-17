@@ -77,7 +77,6 @@ class App extends PureComponent {
       if (visibility === 'ACTIVE') return !item.select
       return true
     })
-    console.log(finalTodoList)
     return (
       <div>
         <h4>React Redux todoList</h4>
