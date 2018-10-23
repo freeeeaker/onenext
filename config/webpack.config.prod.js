@@ -216,7 +216,8 @@ module.exports = {
       '@view': path.resolve(__dirname, '../src/view'),
       '@page': path.resolve(__dirname, '../src/page'),
       '@style': path.resolve(__dirname, '../src/style'),
-      '@static': path.resolve(__dirname, '../src/static')
+      '@static': path.resolve(__dirname, '../src/static'),
+      '@hoc': path.resolve(__dirname, '../src/HOC')
     },
     plugins: [
       // Adds support for installing with Plug'n'Play, leading to faster installs and adding

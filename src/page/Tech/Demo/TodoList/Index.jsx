@@ -43,6 +43,7 @@ export default
   }
 })
 class Todo extends PureComponent {
+  static displayName = 'todoList'
   constructor () {
     super()
     this.state = {

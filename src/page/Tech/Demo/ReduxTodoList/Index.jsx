@@ -37,6 +37,7 @@ const store = createStore(reducers)
   return { todos, visibility }
 })
 class App extends PureComponent {
+  static displayName = 'redux todoList'
   onChange = (ev) => {
     this.setState({ value: ev.target.value })
   }

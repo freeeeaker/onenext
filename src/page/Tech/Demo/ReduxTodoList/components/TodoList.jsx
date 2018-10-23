@@ -1,6 +1,7 @@
-import React, { PureComponent } from 'react'
+import React, { PureComponent, Children } from 'react'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
+import { withPropsOnChange } from 'recompose'
 
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -22,6 +23,9 @@ export default
   return {
     setSelectAll: all => dispatch(selectAllTodos(all))
   }
+})
+@withPropsOnChange(['todos'], function (props) {
+  return { length: props.todos?.length }
 })
 @withStyles({
   table: {
@@ -55,8 +59,9 @@ class TodoList extends PureComponent {
     })
   }
   render () {
-    const { classes } = this.props
+    const { classes, length } = this.props
     const { selectAll } = this.state
+    console.log('length:', length)
     return (
       <Table className={classes.table}>
         <TableHead>

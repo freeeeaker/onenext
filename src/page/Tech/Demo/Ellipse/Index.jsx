@@ -12,6 +12,7 @@ export default
   }
 })
 class Ellipse extends PureComponent {
+  static displayName = 'ellipse animation'
   componentDidMount () {
     const context = this.canvas.getContext('2d')
     this.canvas.width = 980

@@ -30,8 +30,6 @@ class Todo extends PureComponent {
     this.state = { value: props.value, checked: props.select }
   }
   static getDerivedStateFromProps (props, state) {
-    console.log(props)
-    console.log(state)
     if (props.select != state.checked) {
       return { checked: props.select }
     }
@@ -64,27 +62,27 @@ class Todo extends PureComponent {
     const { index, edit, complete, id } = this.props
     return (
      <TableRow>
-       <TableCell padding="checkbox">
-          <Checkbox checked={checked} onChange={(ev, status) => this.selectTodo(id, ev)} />
-        </TableCell>
-        <TableCell padding="none">{index + 1}</TableCell>
-        <TableCell padding="none">
-        {
-          edit
-          ? <Input
-              autoFocus
-              fullWidth
-              value={value}
-              onChange={this.onChangeInput}
-              onBlur={(ev) => this.modifyTodo(ev, id)}
-              onKeyUp={(ev) => this.modifyTodo(ev, id)}
-            />
-          : value
-        }
-        </TableCell>
-        <TableCell padding="none"><EditIcon onClick={() => this.editTodo(id)} /></TableCell>
-        <TableCell padding="none"><DeleteIcon onClick={() => this.removeTodo(id)} /></TableCell>
-        <TableCell padding="none"><Checkbox checked={complete} onChange={() => this.completeTodo(id)} /></TableCell>
+      <TableCell padding="checkbox">
+        <Checkbox checked={checked} onChange={(ev, status) => this.selectTodo(id, ev)} />
+      </TableCell>
+      <TableCell padding="none">{index + 1}</TableCell>
+      <TableCell padding="none">
+      {
+        edit
+        ? <Input
+            autoFocus
+            fullWidth
+            value={value}
+            onChange={this.onChangeInput}
+            onBlur={(ev) => this.modifyTodo(ev, id)}
+            onKeyUp={(ev) => this.modifyTodo(ev, id)}
+          />
+        : value
+      }
+      </TableCell>
+      <TableCell padding="none"><EditIcon onClick={() => this.editTodo(id)} /></TableCell>
+      <TableCell padding="none"><DeleteIcon onClick={() => this.removeTodo(id)} /></TableCell>
+      <TableCell padding="none"><Checkbox checked={complete} onChange={() => this.completeTodo(id)} /></TableCell>
      </TableRow>
     )
   }

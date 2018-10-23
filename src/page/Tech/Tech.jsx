@@ -126,14 +126,14 @@ class Tech extends PureComponent {
               { 
                 Object.keys(demos).map(demo => {
                   return (
-                    <Route key={`/tech/demo/${demo}`} exact path={`/tech/demo/${demo}`} component={demos[demo]} />
+                    <Route key={`/tech/demo/${demo}`} path={`/tech/demo/${demo}`} component={demos[demo]} />
                   )
                 })
               }
               { 
                 Object.keys(notes).map(note => {
                   return (
-                    <Route key={`/tech/note/${note}`} exact path={`/tech/note/${note}`} component={notes[note]} />
+                    <Route key={`/tech/note/${note}`} path={`/tech/note/${note}`} component={notes[note]} />
                   )
                 })
               }

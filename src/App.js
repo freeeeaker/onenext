@@ -12,10 +12,10 @@ class App extends Component {
       <Fragment>
         <CssBaseline />
           <Header />
-          <Route exact path="/material-ui" component={MaterialUI}></Route>
-          <Route exact path="/life" component={Life}></Route>
+          <Route path="/material-ui" component={MaterialUI}></Route>
+          <Route path="/life" component={Life}></Route>
           <Route path="/tech" component={Tech}></Route>
-          <Route exact path="/about" component={About}></Route>
+          <Route path="/about" component={About}></Route>
       </Fragment>
     );
   }

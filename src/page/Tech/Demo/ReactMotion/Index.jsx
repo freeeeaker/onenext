@@ -1,12 +1,20 @@
 import React, { PureComponent } from 'react'
+import { Route, withRouter, Switch } from 'react-router'
 import { Motion, StaggeredMotion, TransitionMotion, spring, presets } from 'react-motion'
 
 import { withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import Input from '@material-ui/core/Input'
+import Paper from '@material-ui/core/Paper'
+import Tabs from '@material-ui/core/Tabs'
+import Tab from '@material-ui/core/Tab'
 
+import MotionDemo from './MotionDemo/Index'
+import StaggeredMotionDemo from './StaggeredMotionDemo/Index'
+import TransitionMotionDemo from './TransitionMotion/Index'
 
 export default
+
 @withStyles({
   motion: {
     width: 100,
@@ -43,157 +51,65 @@ export default
     }
   }
 })
+@withRouter
 class ReactMotion extends PureComponent {
-  constructor () {
-    super()
-    this.state = {
-      motionKey: Math.random(),
-      motionRun: false,
-      StaggeredMotionKey: Math.random(),
-      width: 0,
-      value: '',
-      list: [{ key: 't-' + Math.random(), value: 123, width: 0 }]
-    }
-    this.heights = []
-  }
-  componentDidMount () {
-    this.setState({ width: this.h2.getBoundingClientRect().width - 100 })
-    this.heights = this.getHeights()
-  }
-  componentDidUpdate () {
-    this.heights = this.getHeights()
-  }
-  componentDidCatch (error) {
-    console.log(error)
-  }
-  willEnter = (styleThatEntered) => {
-
-    return { height: 0, opacity: 0 }
-  }
-  willLeave = () => {
-    return { height: spring(0), opacity: spring(0) }
-  }
-  onChange = (ev) => {
-    this.setState({ value: ev.target.value })
-  }
-  onKeyUp = (ev) => {
-    if (ev.keyCode === 13) {
-      this.setState({ list: [ { value: this.state.value, key: 't-' + Math.random(), width: 0 },  ...this.state.list ] })
-    }
-  }
-  getHeights = () => {
-    const heights = []
-    for (let i = 0; i < this.$list.children; i++) {
-      heights.push(this.$list.children[i].querySelector('.list-item').offsetHeight)
-    }
-    return heights
-  }
-  getStyles = () => {
-    return this.state.list.map((item, index) => ({ key: item.key, style: { height: spring(40, presets.gentle), opacity: spring(1, presets.stiff) }, data: item }))
-  }
-  remove = (key) => {
-    for (let i = 0; i < this.state.list.length; i++) {
-      console.log(this.state.list[i].key, key)
-      if (this.state.list[i].key == key) {
-        console.log('remove:', i)
-        this.setState({ list: [ ...this.state.list.slice(0, i), ...this.state.list.slice(i+1)] })
+  static displayName = 'react-motion'
+  state = { activeTab: 0 }
+  onChange = (event, index) => {
+    this.setState({ activeTab: index })
+    const path = this.props.match.path
+    let url
+    switch (index) {
+      case 1:
+        url = `${path}/motion`
         break
-      }
+      case 2:
+        url = `${path}/staggeredMotion`
+        break
+      case 3:
+        url = `${path}/transitionMotion`
+        break
+      default:
+        url = `${path}/`
     }
+    this.props.history.push(url)
   }
   render () {
-    const { motionRun, motionKey, width, StaggeredMotionKey, value, list } = this.state
-    const { classes } = this.props
-    
+    console.log('render:')
+    console.log(this.props)
     return (
       <React.Fragment>
         <h2 ref={ ref => this.h2 = ref }>React Motion Demo</h2>
-        <div>
-          <h3>Motion Demo</h3>
-          <Button variant="contained" color="primary" onClick={ () => this.setState({ motionKey: Math.random(), motionRun: true }) }>start</Button>
-          <Motion
-            key={ motionKey }
-            defaultStyle={{x: 0, y: 0, z: 0, g: 0, h: 0}}
-            style={{
-              x: spring(width, presets.wobbly),
-              y: spring(width, presets.gentle),
-              z: spring(width, presets.stiff),
-              g: spring(width, presets.noWobble)
-            }}
-            // onRest={ () => { this.setState({ motionRun: false }) } }
-          >
-          { 
-            value => (
-              <React.Fragment>
-                <div key="m1" className={ classes.motion } style={{ transform: motionRun ? `translate(${value.g}px, 0)` : 'none' }} >default</div>
-                <div key="m3" className={ classes.motion } style={{ transform: motionRun ? `translate(${value.x}px, 0)` : 'none' }} >wobbly</div>
-                <div key="m4" className={ classes.motion } style={{ transform: motionRun ? `translate(${value.y}px, 0)` : 'none' }} >stiff</div>
-                <div key="m5" className={ classes.motion } style={{ transform: motionRun ? `translate(${value.z}px, 0)` : 'none' }} >noWobble</div>
-              </React.Fragment>
-            )
-          }
-          </Motion>
-        </div>
-        <div>
-          <h3>StaggeredMotion Demo</h3>
-          <Button variant="contained" color="primary" onClick={ () => this.setState({ StaggeredMotionKey: Math.random(), StaggeredMotionRun: true }) }>start</Button>
-          <StaggeredMotion
-            key={ StaggeredMotionKey }
-            defaultStyles={ [{ x: 0 }, { x: 0 }, { x: 0 }, { x: 0 } ]}
-            styles={
-              prevInterpolatedStyles => prevInterpolatedStyles.map((_, i) => { return { x: spring(i === 0 ? width : prevInterpolatedStyles[i - 1].x, presets.stiff) } } )
-            }
-            // onRest={ () => { this.setState({ motionRun: false }) } }
-          >
-          {
-            prevInterpolatedStyles => {
-              return (
-                <React.Fragment>
-                  {
-                    prevInterpolatedStyles.map((style, i) => {
-                      return <div key={i} className={ classes.motion } style={{ transform: `translate(${style.x}px, 0)` }} />
-                    })
-                  }
-                </React.Fragment>
-              )
-            }
-          }
-          </StaggeredMotion>
-        </div>
-        <div>
-          <h3>TransitionMotion Demo</h3>
-          <Input
-            fullWidth
-            autoComplete="off"
-            placeholder="input your todo item"
-            value={value}
+        <Paper>
+          <Tabs
+            value={this.state.activeTab}
+            indicatorColor="primary"
+            textColor="primary"
             onChange={this.onChange}
-            onKeyUp={this.onKeyUp}
-          />
-          <TransitionMotion
-            willEnter={this.willEnter}
-            willLeave={this.willLeave}
-            defaultStyles={ list.map(item => ({ ...item, style: { height: 0, opacity: 0 } })) }
-            styles={this.getStyles()}
           >
-          {
-            interpolatedStyles =>
-              // first render: a, b, c. Second: still a, b, c! Only last one's a, b.
-              <ul ref={ ref => this.$list = ref }>
-                {
-                  interpolatedStyles.map(config => {
-                    return (
-                      <li key={config.key} data-key={config.key} className={classes.listItem} style={{height: config.style.height + 'px', opacity: config.style.opacity }}>
-                        <div className="list-item">{config.data.value}<span onClick={() => this.remove(config.key)}>REMOVE</span></div>
-                      </li>
-                    )
-                  })
-                }
-              </ul>
-          }
-          </TransitionMotion>
-        </div>
+            <Tab label="intro" />
+            <Tab label="Motion" />
+            <Tab label="StaggeredMotion" />
+            <Tab label="TransitionMotion" />
+          </Tabs>
+        </Paper>
+
+          <Route exact path="/tech/demo/ReactMotion/" render={() => <Home />} />
+          <Route path="/tech/demo/ReactMotion/motion" component={MotionDemo} />
+          <Route path="/tech/demo/ReactMotion/staggeredMotion" component={StaggeredMotionDemo} />
+          <Route path="/tech/demo/ReactMotion/transitionMotion" component={TransitionMotionDemo} />
+
       </React.Fragment>
+    )
+  }
+}
+
+class Home extends PureComponent {
+  render () {
+    return (
+      <div>
+        <p>这里是 react-motion 动画库的一些 demo， react-motion 是一个 React 弹性动画库</p>
+      </div>
     )
   }
 }
