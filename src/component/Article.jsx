@@ -57,10 +57,12 @@ export default
 class Article extends PureComponent {
   render () {
     const { classes, title, author, time } = this.props
+    let timeHTML = time ?  <time>{time}</time> : null
+    let authorHTML = author ? <span>by {author}</span> : null
     return (
       <div className={classes.root}>
         <h2>{title}</h2>
-        <address><time>{time}</time> by {author}</address>
+        <address>{timeHTML} {authorHTML}</address>
         {this.props.children}
       </div>
     )
