@@ -6,6 +6,7 @@ import MaterialUI from '@page/MaterialUI'
 import About from '@page/About'
 import Life from '@page/Life'
 import Tech from '@page/Tech/Tech'
+import Rxjs from 'rxjs'
 class App extends Component {
   render() {
     return (
@@ -22,3 +23,4 @@ class App extends Component {
 }
 
 export default App;
+

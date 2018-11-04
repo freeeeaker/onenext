@@ -17,11 +17,16 @@ export default function drag(WrapedComponent) {
     down = ev => {
       this.x = ev.clientX
       this.y = ev.clientY
+      const style = getComputedStyle(this.node)
+      let left = parseInt(style.left)
+      let top = parseInt(style.top)
+      this.left = left ? left : null
+      this.top = top ? top : null
       document.addEventListener('mousemove', this.move)
       document.addEventListener('mouseup', this.up)
     }
     move = ev => {
-      this.setState({ x: ev.clientX - this.x, y: ev.clientY - this.y })
+      this.setState({ x: ev.clientX - this.x + this.left, y: ev.clientY - this.y + this.top })
     }
     up = ev => {
       document.removeEventListener('mousemove', this.move)
